@@ -1,6 +1,6 @@
-// src/index.js
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
+import Knexfile from "../knexfile";
 
 dotenv.config();
 
