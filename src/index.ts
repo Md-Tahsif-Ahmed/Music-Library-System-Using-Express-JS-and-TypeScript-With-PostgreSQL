@@ -27,10 +27,26 @@ const app = express();
 app.use(bodyParser.json());
 // JWT Secret Key
 const secretKey = process.env.SECRET_KEY || 'defaultSecretKey'
+// Middleware to validate JWT
+const verifyToken = (req: Request, res: Response, next: NextFunction)=>{
+  const token = req.header('Authorization');
+  if(!token){
+    return res.sendStatus(401)
+  }
+  jwt.verify(token, secretKey, (err:any, user:any)=> {
+    if(err){
+      return res.sendStatus(403);
+      
+    }
+    (req as AuthenticatedRequest).user = user;
+      next();
+  })
+}
 
 interface AuthenticatedRequest extends Request {
   user?: any; // Here adjust the type of 'user' as needed
 }
+
 // user register api endpoit
 app.post('/register', [
   check('username').isLength({ min: 5 }),
