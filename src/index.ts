@@ -1,5 +1,5 @@
 // Import required modules
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Request, Response, NextFunction, response } from 'express';
 import * as bodyParser from 'body-parser';
 import Knex, { knex } from 'knex';
 import * as jwt from 'jsonwebtoken';
@@ -25,8 +25,8 @@ const db = Knex({
 
 const app = express();
 app.use(bodyParser.json());
-
-
+// JWT Secret Key
+const secretKey = process.env.SECRET_KEY || 'defaultSecretKey'
 
 interface AuthenticatedRequest extends Request {
   user?: any; // Here adjust the type of 'user' as needed
@@ -62,6 +62,22 @@ app.post('/register', [
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+// user login with token based
+app.post('/login', async (req:Request, res:Response)=>{
+  const {username, password} = req.body;
+  const user = await db('users').where({username}).first();
+  if(user && await bcrypt.compare(password, user.password_hash)){
+    const accessToken = jwt.sign({ username: user.username}, secretKey);
+    return res.json({accessToken});
+
+  }
+  else{
+    return res.sendStatus(401);
+  }
+
+
+})
 
 // Start the server
 const PORT = process.env.PORT || 3000;
