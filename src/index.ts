@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 interface AuthenticatedRequest extends Request {
   user?: any; // Here adjust the type of 'user' as needed
 }
-
+// user register api endpoit
 app.post('/register', [
   check('username').isLength({ min: 5 }),
   check('password').isLength({ min: 8 }),
