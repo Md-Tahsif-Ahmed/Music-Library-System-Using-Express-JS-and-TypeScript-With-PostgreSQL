@@ -1,4 +1,4 @@
-<h1>Music Library System API Working Procidure</h1>
+<h1>Music Library System API initial setup and run Procedure</h1>
 <h3>How to Setup Project</h3>
 <ul>
   <li>
