@@ -27,21 +27,32 @@ const app = express();
 app.use(bodyParser.json());
 // JWT Secret Key
 const secretKey = process.env.SECRET_KEY || 'defaultSecretKey'
-// Middleware to validate JWT
-const verifyToken = (req: Request, res: Response, next: NextFunction)=>{
+console.log(secretKey);
+
+const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   const token = req.header('Authorization');
-  if(!token){
-    return res.sendStatus(401)
+
+  console.log('Token:', token);
+
+  if (!token) {
+    console.log('No token provided');
+    return res.sendStatus(401);
   }
-  jwt.verify(token, secretKey, (err:any, user:any)=> {
-    if(err){
-      return res.sendStatus(403);
-      
+
+  jwt.verify(token.split(' ')[1], secretKey, (err, decoded) => {
+    if (err) {
+      console.error('Token Verification Error:', err);
+      return res.status(401).send({ message: 'unauthorized access' });
     }
-    (req as AuthenticatedRequest).user = user;
-      next();
-  })
-}
+
+    console.log('Decoded Token:', decoded);
+    (req as AuthenticatedRequest).user = decoded;
+    next();
+  });
+};
+
+
+
 
 interface AuthenticatedRequest extends Request {
   user?: any; // Here adjust the type of 'user' as needed
@@ -84,17 +95,52 @@ app.post('/login', async (req:Request, res:Response)=>{
   const {username, password} = req.body;
   const user = await db('users').where({username}).first();
   if(user && await bcrypt.compare(password, user.password_hash)){
-    const accessToken = jwt.sign({ username: user.username}, secretKey);
+    const accessToken = jwt.sign({ username: user.username }, secretKey, { expiresIn: '1hr' });
+
     return res.json({accessToken});
 
   }
   else{
     return res.sendStatus(401);
   }
-
-
 })
 
+// Create albums
+// app.post('/albums', async (req:Request, res:Response)=>{
+//  const {title, release_year,genre, artists} = req.body;
+
+// })
+app.post('/albums', verifyToken, async (req, res) => {
+  console.log('Received Token:', req.header('Authorization'));
+  const { title, release_year, genre, artists } = req.body;
+
+  // Insert album
+  const [albumId] = await db('albums').insert({ title, release_year, genre }).returning('album_id');
+
+  // Insert or fetch artists and associate with the album
+  
+if (Array.isArray(artists) && artists.length > 0) {
+  const artistIds = await Promise.all(
+    artists.map(async (artistName: string) => {
+      const [artistId] = await db('artists').insert({ name: artistName }).returning('artist_id');
+      return artistId;
+    })
+  );
+
+  // ...
+
+// Associate artists with the album
+await db('album_artists').insert(
+  artistIds.map((artistId) => ({ album_id: albumId, artist_id: artistId }))
+);
+
+// ...
+
+}
+
+
+  res.sendStatus(201);
+});
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
