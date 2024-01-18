@@ -7,15 +7,18 @@
   <li>Create src folder and index.ts file this file have server releted work</li>
   <li>In package.json set main: src/index.js</li>
   <li>In package.json do this change:
-  "scripts": {
+<p>
+    "scripts": {
     "build": "npx tsc",
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+</p>
   </li>
   <li>connect PostgreSQL with Express JS:
-// Configure Knex for PostgreSQL
+<p>
+  // Configure Knex for PostgreSQL
     const db = Knex({
       client: 'pg',
       connection: {
@@ -26,7 +29,8 @@
       },
       debug: true,  
       useNullAsDefault: true, 
-});</li>
+});
+</p></li>
   <li>Created .env and .gitignore. In .gitignore file where add node_modules and .env</li>
   <li></li>
 </ul>
