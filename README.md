@@ -2,7 +2,7 @@
 <ul>
   <li>At first install Express, bcrypt, express-validator, body-parser, knex, pg, jsonwebtoken, cors, dotenv using  npm i </li>
   <li>Install typeScript using npm install -g typeSrcipt</li>
-  <li>install typeScript types using npm install -D typescript @types/node @types/express @types/body-parser @types/knex </li>
+  <li>Install typeScript types using npm install -D typescript @types/node @types/express @types/body-parser @types/knex </li>
   <li>By using npx tsc --init create tsconfig.js file and comment out outDir and set ./dist</li>
   <li>Create src folder and index.ts file this file have server releted work</li>
   <li>In package.json set main: src/index.js</li>
@@ -18,7 +18,9 @@
   </li>
   <li>connect PostgreSQL with Express JS:
 <p>
-  // Configure Knex for PostgreSQL
+ <h6>
+    // Configure Knex for PostgreSQL
+ </h6>
     const db = Knex({
       client: 'pg',
       connection: {
