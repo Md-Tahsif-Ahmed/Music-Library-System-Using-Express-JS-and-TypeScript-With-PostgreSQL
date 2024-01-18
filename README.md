@@ -1,5 +1,13 @@
 <h3>How to Setup Project</h3>
 <ul>
+  <li>
+    Create Project dir: <p>mkdir music-library-system</p>
+                        <p>cd music-library-system</p>
+
+  </li>
+  <li>Create Package.json <p>npm init -y
+</p></li>
+  
   <li>At first install Express, bcrypt, express-validator, body-parser, knex, pg, jsonwebtoken, cors, dotenv using  npm i </li>
   <li>Install typeScript using npm install -g typeSrcipt</li>
   <li>Install typeScript types using npm install -D typescript @types/node @types/express @types/body-parser @types/knex </li>
@@ -34,5 +42,6 @@
 });
 </p></li>
   <li>Created .env and .gitignore. In .gitignore file where add node_modules and .env</li>
-  <li></li>
+  <li>Install ts-node</li>
 </ul>
+<h3>Run the Project using npm run dev</h3>
