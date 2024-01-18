@@ -1,11 +1,10 @@
+<h1>Music Library System API Working Procidure</h1>
 <h3>How to Setup Project</h3>
 <ul>
   <li>
-    Create Project dir: <p>mkdir music-library-system</p>
-                        <p>cd music-library-system</p>
-
-  </li>
-  <li>Create Package.json <p>npm init -y
+    Create Project dir: <p>mkdir music-library-system</p><p>cd music-library-system</p>
+</li>
+  <li>Create Package.json file <p>npm init -y
 </p></li>
   
   <li>At first install Express, bcrypt, express-validator, body-parser, knex, pg, jsonwebtoken, cors, dotenv using  npm i </li>
