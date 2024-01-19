@@ -98,7 +98,7 @@ app.post('/login', async (req:Request, res:Response)=>{
   const {username, password} = req.body;
   const user = await db('users').where({username}).first();
   if(user && await bcrypt.compare(password, user.password_hash)){
-    const accessToken = jwt.sign({ username: user.username }, secretKey, { expiresIn: '1hr' });
+    const accessToken = jwt.sign({ username: user.username }, secretKey, { expiresIn: '5hr' });
 
     return res.json({accessToken});
 
@@ -142,6 +142,22 @@ app.get('/albums', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Failed to retrieve albums' });
+  }
+});
+
+// Get a specific album by ID
+app.get('/albums/:id', async (req, res) => {
+  const albumId = req.params.id;
+  try {
+    const album = await db('albums').where({ id: albumId }).first();
+    if (album) {
+      res.json(album);
+    } else {
+      res.status(404).json({ message: 'Album not found' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to retrieve the album' });
   }
 });
 
