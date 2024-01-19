@@ -190,6 +190,20 @@ app.put('/albums/:id', verifyToken, async (req, res) => {
   }
 });
 
+// Delete an album by ID
+app.delete('/albums/:id', verifyToken, async (req, res) => {
+  const albumId = req.params.id;
+
+  try {
+    await db('album_artists').where({ album_id: albumId }).del(); // Delete associated artists
+    await db('albums').where({ id: albumId }).del(); // Delete the album
+    res.sendStatus(204);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to delete the album' });
+  }
+});
+
 // ... other routes and code ...
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
