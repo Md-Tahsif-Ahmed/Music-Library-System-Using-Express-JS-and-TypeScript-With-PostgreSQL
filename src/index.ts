@@ -161,6 +161,35 @@ app.get('/albums/:id', async (req, res) => {
   }
 });
 
+// Update an album by ID
+app.put('/albums/:id', verifyToken, async (req, res) => {
+  const albumId = req.params.id;
+  const { title, release_year, genre, artist_ids } = req.body;
+
+  try {
+    await db('albums').where({ id: albumId }).update({
+      title,
+      release_year,
+      genre,
+    });
+
+    // Delete existing relationships
+    await db('album_artists').where({ album_id: albumId }).del();
+
+    // Insert new relationships
+    if (artist_ids) {
+      await db('album_artists').insert(
+        artist_ids.map((artistId: number) => ({ album_id: albumId, artistId }))
+      );
+    }
+
+    res.json({ id: albumId, title, release_year, genre });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to update the album' });
+  }
+});
+
 // ... other routes and code ...
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
