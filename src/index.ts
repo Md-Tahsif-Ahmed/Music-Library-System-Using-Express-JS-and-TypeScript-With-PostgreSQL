@@ -203,6 +203,24 @@ app.delete('/albums/:id', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Failed to delete the album' });
   }
 });
+// ................Artists Starts
+// Create a new artist
+app.post('/artists', verifyToken, async (req, res) => {
+  const { name} = req.body;
+
+  try {
+    const artist = await db('artists').insert({
+      name,
+    
+    });
+
+    res.json({ id: artist[0], name});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to create artist' });
+  }
+});
+
 
 // ... other routes and code ...
 app.listen(PORT, () => {
