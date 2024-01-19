@@ -50,25 +50,35 @@
 <p>Here's a detailed breakdown of the main API endpoints for your music library system:</p>
 
 <h5>User Endpoints:</h5>
+<ul>
+  <li>
+   POST /register: Takes username, email, and password (hashed) to register a new user.</li>
+  <li>POST /login: Takes username and password to authenticate and return a JWT token on success.</li>
+</ul>
 
-POST /register: Takes username, email, and password (hashed) to register a new user.
-POST /login: Takes username and password to authenticate and return a JWT token on success.
 <h5>Album Endpoints:</h5>
 
-POST /albums: Protected endpoint to create a new album, requires title, release_year, and genre in the body.
-GET /albums: Retrieves all albums.
-GET /albums/:id: Retrieves an album by its ID.
-PUT /albums/:id: Protected endpoint to update an album by its ID, requires relevant fields in the body.
-DELETE /albums/:id: Protected endpoint to delete an album by its ID.
+<ul>
+  <li>GET /albums: Retrieves all albums.</li>
+  <li>GET /albums/:id: Retrieves an album by its ID.</li>
+  <li>PUT /albums/:id: Protected endpoint to update an album by its ID, requires relevant fields in the body.</li>
+  <li>
+DELETE /albums/:id: Protected endpoint to delete an album by its ID.</li>
+</ul>
 <h5>Artist Endpoints:</h5>
-
-POST /artists: Protected endpoint to create a new artist, requires name in the body.
-GET /artists: Retrieves all artists.
-PUT /artists/:id: Protected endpoint to update an artist by its ID, requires relevant fields in the body.
-DELETE /artists/:id: Protected endpoint to delete an artist by its ID.
+<ul>
+  <li>POST /artists: Protected endpoint to create a new artist, requires name in the body.</li>
+  <li>GET /artists: Retrieves all artists.</li>
+  <li>PUT /artists/:id: Protected endpoint to update an artist by its ID, requires relevant fields in the body.</li>
+  <li>DELETE /artists/:id: Protected endpoint to delete an artist by its ID.</li>
+ 
+</ul>
 <h5>Song Endpoints:</h5>
+<ul>
+  <li>
+POST /songs: Protected endpoint to create a new song, requires title, duration, and album_id in the body.</li>
+  <li>GET /songs: Retrieves all songs, optionally filter by album_id or artist_id.</li>
+</ul>
 
-POST /songs: Protected endpoint to create a new song, requires title, duration, and album_id in the body.
-GET /songs: Retrieves all songs, optionally filter by album_id or artist_id.
  
  
