@@ -230,6 +230,19 @@ app.get('/artists', async (req, res) => {
     res.status(500).json({ message: 'Failed to retrieve artists' });
   }
 });
+// update 
+app.put('/artists/:id', verifyToken, async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    await db('artists').where({ id: req.params.id }).update({ name });
+
+    res.json({ message: 'Artist updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to update artist' });
+  }
+});
 
 
 // ... other routes and code ...
