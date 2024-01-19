@@ -220,6 +220,16 @@ app.post('/artists', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Failed to create artist' });
   }
 });
+// Get all artists
+app.get('/artists', async (req, res) => {
+  try {
+    const artists = await db('artists').select('*');
+    res.json(artists);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to retrieve artists' });
+  }
+});
 
 
 // ... other routes and code ...
