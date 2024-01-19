@@ -59,6 +59,7 @@
 <h5>Album Endpoints:</h5>
 
 <ul>
+  <li>POST /albums: Protected endpoint to create a new album, requires title, release_year, and genre in the body.</li>
   <li>GET /albums: Retrieves all albums.</li>
   <li>GET /albums/:id: Retrieves an album by its ID.</li>
   <li>PUT /albums/:id: Protected endpoint to update an album by its ID, requires relevant fields in the body.</li>
