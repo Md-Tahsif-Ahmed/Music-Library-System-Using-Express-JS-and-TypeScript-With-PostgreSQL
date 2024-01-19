@@ -44,3 +44,31 @@
   <li>Install ts-node</li>
 </ul>
 <h3>Run the Project using npm run dev</h3>
+
+
+<h1>Music Library System API Endpoints</h1>
+<p>Here's a detailed breakdown of the main API endpoints for your music library system:</p>
+
+<h5>User Endpoints:</h5>
+
+POST /register: Takes username, email, and password (hashed) to register a new user.
+POST /login: Takes username and password to authenticate and return a JWT token on success.
+<h5>Album Endpoints:</h5>
+
+POST /albums: Protected endpoint to create a new album, requires title, release_year, and genre in the body.
+GET /albums: Retrieves all albums.
+GET /albums/:id: Retrieves an album by its ID.
+PUT /albums/:id: Protected endpoint to update an album by its ID, requires relevant fields in the body.
+DELETE /albums/:id: Protected endpoint to delete an album by its ID.
+<h5>Artist Endpoints:</h5>
+
+POST /artists: Protected endpoint to create a new artist, requires name in the body.
+GET /artists: Retrieves all artists.
+PUT /artists/:id: Protected endpoint to update an artist by its ID, requires relevant fields in the body.
+DELETE /artists/:id: Protected endpoint to delete an artist by its ID.
+<h5>Song Endpoints:</h5>
+
+POST /songs: Protected endpoint to create a new song, requires title, duration, and album_id in the body.
+GET /songs: Retrieves all songs, optionally filter by album_id or artist_id.
+ 
+ 
