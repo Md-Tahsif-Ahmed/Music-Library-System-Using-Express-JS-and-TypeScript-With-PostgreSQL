@@ -272,6 +272,17 @@ app.post('/songs', verifyToken, async (req, res) => {
   }
 });
 
+// Get all songs
+app.get('/songs', async (req, res) => {
+  try {
+    const songs = await db('songs').select('*');
+    res.json(songs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to retrieve songs' });
+  }
+});
+
 
 // ... other routes and code ...
 app.listen(PORT, () => {
