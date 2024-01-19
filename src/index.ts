@@ -6,6 +6,7 @@ import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import { check, validationResult } from 'express-validator';
 require('dotenv').config();
+const PORT = process.env.PORT || 3000;
 
 
 console.log(process.env.DB_USER);
@@ -24,7 +25,9 @@ const db = Knex({
 });
 
 const app = express();
+// Add this line before defining your routes
 app.use(bodyParser.json());
+
 // JWT Secret Key
 const secretKey = process.env.SECRET_KEY || 'defaultSecretKey'
 console.log(secretKey);
@@ -104,45 +107,45 @@ app.post('/login', async (req:Request, res:Response)=>{
     return res.sendStatus(401);
   }
 })
-
-// Create albums
-// app.post('/albums', async (req:Request, res:Response)=>{
-//  const {title, release_year,genre, artists} = req.body;
-
-// })
 app.post('/albums', verifyToken, async (req, res) => {
-  console.log('Received Token:', req.header('Authorization'));
-  const { title, release_year, genre, artists } = req.body;
+  try {
+    const { title, release_year, genre, artist_ids } = req.body;
 
-  // Insert album
-  const [albumId] = await db('albums').insert({ title, release_year, genre }).returning('album_id');
+    const album = await db('albums').insert({
+      title,
+      release_year,
+      genre,
+    });
 
-  // Insert or fetch artists and associate with the album
-  
-if (Array.isArray(artists) && artists.length > 0) {
-  const artistIds = await Promise.all(
-    artists.map(async (artistName: string) => {
-      const [artistId] = await db('artists').insert({ name: artistName }).returning('artist_id');
-      return artistId;
-    })
-  );
+    const albumId = album[0];
 
-  // ...
+    if (artist_ids) {
+      await db('album_artists').insert(
+        artist_ids.map((artistId: number) => ({ album_id: albumId, artistId })) // Corrected line
+      );
+    }
 
-// Associate artists with the album
-await db('album_artists').insert(
-  artistIds.map((artistId) => ({ album_id: albumId, artist_id: artistId }))
-);
-
-// ...
-
-}
-
-
-  res.sendStatus(201);
+    res.json({ id: albumId, title, release_year, genre });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to create album' });
+  }
 });
-// Start the server
-const PORT = process.env.PORT || 3000;
+
+// ... other imports and code ...
+
+// Get all albums
+app.get('/albums', async (req, res) => {
+  try {
+    const albums = await db('albums').select('*');
+    res.json(albums);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to retrieve albums' });
+  }
+});
+
+// ... other routes and code ...
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
