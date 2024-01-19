@@ -243,6 +243,17 @@ app.put('/artists/:id', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Failed to update artist' });
   }
 });
+// delete
+app.delete('/artists/:id', verifyToken, async (req, res) => {
+  try {
+    await db('album_artists').where({ artist_id: req.params.id }).delete();
+    await db('artists').where({ id: req.params.id }).delete();
+    res.json({ message: 'Artist deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to delete artist' });
+  }
+});
 
 
 // ... other routes and code ...
